@@ -29,5 +29,7 @@ app.use('/api/user/delete', require('./API/User/removeUser'));
 //Auth
 //login
 app.use('/api/user/login', require('./API/Auth/login'));
+//logout
+app.use('/api/user/logout', require('./API/Auth/logout'));
 
 app.listen(Port, () => console.log(`Server started, connected to ${Port}`));
