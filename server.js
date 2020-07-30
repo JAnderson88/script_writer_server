@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
+require('dotenv').config();
 const app = express();
 const DBConnection = require('./Models/Connection');
 
@@ -13,7 +13,7 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "*");
   next();
 });
-app.use(session({secret: "secrettt", resave:false, saveUninitialized:true}));
+
 const Port = process.env.port || 3000;
 
 //Users
@@ -31,5 +31,15 @@ app.use('/api/user/delete', require('./API/User/removeUser'));
 app.use('/api/user/login', require('./API/Auth/login'));
 //logout
 app.use('/api/user/logout', require('./API/Auth/logout'));
+
+//Projects
+//add
+app.use('/api/project/add', require('./API/Projects/addProject'));
+//edit
+app.use('/api/project/edit', require('./API/Projects/editProject'));
+//read
+app.use('/api/project', require('./API/Projects/getProjects'));
+//delete
+app.use('/api/project/delete', require('./API/Projects/removeProject'));
 
 app.listen(Port, () => console.log(`Server started, connected to ${Port}`));

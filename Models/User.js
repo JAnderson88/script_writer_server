@@ -10,6 +10,10 @@ const user = new mongoose.Schema({
     },
     password: {
         type:String
+    },
+    projects: {
+        type: Array,
+        default: []
     }
 })
 
