@@ -14,6 +14,10 @@ const user = new mongoose.Schema({
     projects: {
         type: Array,
         default: []
+    },
+    treatment: {
+        type: Array,
+        default: []
     }
 })
 

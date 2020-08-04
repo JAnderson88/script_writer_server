@@ -10,7 +10,8 @@ const project = new mongoose.Schema({
     default: Date.now
   },
   editedOn: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   owner: {
     type: mongoose.SchemaTypes.ObjectId,

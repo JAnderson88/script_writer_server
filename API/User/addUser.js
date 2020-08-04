@@ -6,30 +6,27 @@ const password = require('password-hash-and-salt');
 
 //requirements: email, password
 route.post('/', async (req, res) => {
-  console.log(req.body);
+  console.log("Adding User");
   const email = req.body.email;
-  const unhashedPassword = req.body.password
-
+  const unhashedPassword = req.body.password;
   const emailExists = await User.findOne({ email });
-  if (emailExists) {
-    return res.json({ response: "An account already exists for this email" });
-  }
-  let user = {}
+  if (emailExists) return res.status(409).json({ response: "An account already exists for this email" });
+  let user = {};
   user.email = email;
   password(unhashedPassword).hash((err, hash) => {
     if (err) {
       console.log(err);
-      throw new Error('Something went wrong')
+      res.status(409).json({ message: "There was an issue with creating your account" });
+      throw new Error('Something went wrong while decrypting the password');
     }
-
     user.password = hash;
-    let userModel = new User(user)
+    let userModel = new User(user);
     userModel.save(err => {
       if (err) {
         console.log(err);
-        res.json({ err })
+        res.status(400).json({ message: "There was an issue with creating your account" })
       } else {
-        res.json(userModel)
+        res.status(200).json({ message: "Your user account has been created" });
       }
     });
   });

@@ -6,27 +6,27 @@ const password = require('password-hash-and-salt');
 
 //requirements: email, password
 route.post('/', async (req, res) => {
-    console.log(req.body);
-    const email = req.body.email;
-    const unhashedPassword = req.body.password;
+  if (!req.headers['authorization']) return res.status(401).json({ message: "You are not authorized" });
+  console.log("Running removeUser");
+  const email = req.body.email;
+  const unhashedPassword = req.body.password;
 
-    const Account = await User.findOne({email});
-    if(Account) {
-        password(unhashedPassword).verifyAgainst(Account.password, (err, verified) => {
-            if(err) {
-                res.json({message: "There was an error retriving your accout."});
-                throw new Error("There was an error retriving your account. It could not be deleted");
-            }
-            if(!verified){
-                res.json({message: "There was an error retriving your account."});
-            } else {
-                const removedAccount = Account.delete();
-                res.json({message: "Account has been succesfully removed"});
-            }
-        })
-    } else {
-        return res.json({message: "This user does not exist"})
+  const Account = await User.findOne({ email });
+  if (!Account) return res.status(400).json({ message: "There was an issue deleting your account" });
+  password(unhashedPassword).verifyAgainst(Account.password, (err, verified) => {
+    if (err) {
+      res.status(400).json({ message: "There was an error retriving your accout." });
+      throw new Error("There was an error retriving your account. It could not be deleted");
     }
+    if (!verified) {
+      res.status(401).json({ message: "There was an error retriving your account." });
+    } else {
+      Account.delete(err => {
+        if (err) return res.status(400).json({ message: "There was an error deleting your account" });
+      });
+      res.status(200).json({ message: "Account has been succesfully removed" });
+    }
+  })
 })
 
 module.exports = route;

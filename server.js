@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 const app = express();
-const DBConnection = require('./Models/Connection');
+let env = require('dotenv').config().parsed;
+const DBConnection = require('./Modules/DBConnection/Connection');
 
 DBConnection('screenwriter');
 
@@ -14,7 +14,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-const Port = process.env.port || 3000;
+const Port = env.port || 3000;
 
 //Users
 //add
