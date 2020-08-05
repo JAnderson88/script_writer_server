@@ -22,7 +22,9 @@ route.get('/', async (req, res) => {
         name: project.name,
         createdOn: project.createdOn,
         owner: project.createdBy,
-        identifier: project.id
+        identifier: project.id,
+        scriptType: project.scriptType,
+        scriptOptions: project.scriptOptions
       } })
   } else {
     const projects = await Project.find({ "owner": userid });
@@ -32,7 +34,9 @@ route.get('/', async (req, res) => {
         name: prjct.name,
         createdOn: prjct.createdOn,
         owner: prjct.createdBy,
-        identifier: prjct.id
+        identifier: prjct.id,
+        scriptType: prjct.scriptType,
+        scriptOptions: prjct.scriptOptions
       }
     })
     res.status(200).json(

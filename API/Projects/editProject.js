@@ -14,6 +14,8 @@ route.post('/', async (req, res) => {
     if (!project) return res.status(204).json({ message: "There was something wrong with returning the result" });
     if (project.name !== req.body.data.name) project.name = req.body.data.name;
     if (project.owner !== req.body.data.createdBy) project.createdBy = req.body.data.owner;
+    if (project.scriptType !== req.body.data.scriptType) project.scriptType = req.body.data.scriptType;
+    if (project.scriptOptions !== req.body.data.scriptOptions) project.scriptOptions = req.body.data.scriptOptions;
     project.editedOn = Date.now();
     await project.save(err => {
       if (err) {

@@ -20,6 +20,15 @@ const project = new mongoose.Schema({
   createdBy: {
     type: String
   },
+  scriptType: {
+    type: String,
+    enum: ["Movie", "Episodic"],
+    default: "Movie"
+  },
+  scriptOptions: {
+    type: String,
+    default: "1"
+  },
   treatment: {
     type: mongoose.SchemaTypes.ObjectId
   },

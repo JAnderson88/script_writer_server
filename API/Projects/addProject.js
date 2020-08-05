@@ -12,32 +12,34 @@ route.post('/', async (req, res) => {
   const storage = sessionStorage();
   const project = {};
   project.name = req.body.name;
-  project.owner = storage.getSession(req.headers['authorization']);;
+  project.owner = storage.getSession(req.headers['authorization']);
   const projectModel = new Project(project);
   projectModel.save(async (err, savedProjectObject) => {
     if (err) {
       console.log(err);
       res.json({ message: "There was an error adding your project" });
     } else {
-      const Account = await User.findOne({ "_id": userId });
+      const Account = await User.findOne({ "_id": storage.getSession(req.headers['authorization']) });
       Account.projects.push(projectModel.id);
       await Account.save((err, savedAccountObject) => {
-        if(err) {
+        if (err) {
           console.log(err);
           res.status(400).json({ message: 'There was an error adding your project' });
-          savedProjectObject.deleteOne({ "_id": savedAccountObject._id}, err => {
+          savedProjectObject.deleteOne({ "_id": projectModel.id }, err => {
             console.log(err);
           })
         }
       });
       res.json({
         message: `Project ${project.name} has been added`,
-        activeProject: savedAccountObject.id,
+        activeProject: savedProjectObject.id,
         project: {
-          name: savedAccountObject.name,
-          createdOn: savedAccountObject.createdOn,
-          owner: savedAccountObject.createdBy,
-          identifier: savedAccountObject.id
+          name: savedProjectObject.name,
+          createdOn: savedProjectObject.createdOn,
+          owner: savedProjectObject.createdBy,
+          identifier: savedProjectObject.id,
+          scriptType: savedProjectObject.scriptType,
+          scriptOptions: savedProjectObject.scriptOptions
         }
       });
     }
