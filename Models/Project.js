@@ -14,6 +14,9 @@ const project = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  fileDirectory: {
+    type: String
+  },
   owner: {
     type: mongoose.SchemaTypes.ObjectId,
     required: true

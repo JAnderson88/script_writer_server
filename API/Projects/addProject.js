@@ -3,7 +3,7 @@ const route = express.Router();
 const User = require('../../Models/User');
 const Project = require('../../Models/Project');
 const sessionStorage = require('../../Modules/SessionStorage/sessionStorage');
-
+const createFolder = require('../../Modules/FileFolders/createFolder');
 
 //requirements: session, name
 route.post('/', async (req, res) => {
@@ -14,12 +14,14 @@ route.post('/', async (req, res) => {
   project.name = req.body.name;
   project.owner = storage.getSession(req.headers['authorization']);
   const projectModel = new Project(project);
+  const Account = await User.findOne({ "_id": storage.getSession(req.headers['authorization']) });
+  const fileDirectory = await createFolder(Account.fileDirectory, projectModel.id, {type: 'project'});
+  projectModel.fileDirectory = fileDirectory;
   projectModel.save(async (err, savedProjectObject) => {
     if (err) {
       console.log(err);
       res.json({ message: "There was an error adding your project" });
     } else {
-      const Account = await User.findOne({ "_id": storage.getSession(req.headers['authorization']) });
       Account.projects.push(projectModel.id);
       await Account.save((err, savedAccountObject) => {
         if (err) {
