@@ -3,7 +3,7 @@ const express = require('express');
 const route = express.Router();
 const User = require('../../Models/User');
 const password = require('password-hash-and-salt');
-const removeFolder = require('../../Modules/FileFolders/removeFolder');
+const remove = require('../../Modules/FileFolders/remove');
 
 //requirements: email, password
 route.post('/', async (req, res) => {
@@ -22,7 +22,7 @@ route.post('/', async (req, res) => {
     if (!verified) {
       res.status(401).json({ message: "There was an error retriving your account." });
     } else {
-      await removeFolder(Account.fileDirectory);
+      await remove(Account.fileDirectory, {type: 'folder'});
       await Account.delete(err => {
         if (err) return res.status(400).json({ message: "There was an error deleting your account" });
       });

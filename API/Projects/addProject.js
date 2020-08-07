@@ -3,7 +3,7 @@ const route = express.Router();
 const User = require('../../Models/User');
 const Project = require('../../Models/Project');
 const sessionStorage = require('../../Modules/SessionStorage/sessionStorage');
-const createFolder = require('../../Modules/FileFolders/createFolder');
+const create = require('../../Modules/FileFolders/create');
 
 //requirements: session, name
 route.post('/', async (req, res) => {
@@ -15,8 +15,9 @@ route.post('/', async (req, res) => {
   project.owner = storage.getSession(req.headers['authorization']);
   const projectModel = new Project(project);
   const Account = await User.findOne({ "_id": storage.getSession(req.headers['authorization']) });
-  const fileDirectory = await createFolder(Account.fileDirectory, projectModel.id, {type: 'project'});
-  projectModel.fileDirectory = fileDirectory;
+  projectModel.fileDirectory = await create(Account.fileDirectory, projectModel.id, { type: 'folder' });
+  console.log(projectModel.fileDirectory);
+  await create(projectModel.fileDirectory, 'treatment.json', { type: 'file' });
   projectModel.save(async (err, savedProjectObject) => {
     if (err) {
       console.log(err);

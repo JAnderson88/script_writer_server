@@ -3,7 +3,7 @@ const express = require('express');
 const route = express.Router();
 const User = require('../../Models/User');
 const password = require('password-hash-and-salt');
-const createFolder = require('../../Modules/FileFolders/createFolder');
+const create = require('../../Modules/FileFolders/create');
 
 //requirements: email, password
 route.post('/', async (req, res) => {
@@ -24,7 +24,7 @@ route.post('/', async (req, res) => {
     let userModel = new User(user);
     const firstLetter = email.substring(0, 1).toUpperCase();
     const path = `./Files/${firstLetter}`;
-    const fileDirectory = await createFolder(path, userModel.id, {type: 'user'});
+    const fileDirectory = await create(path, userModel.id, {type: 'folder'});
     userModel.fileDirectory = fileDirectory;
     const userAccount = await userModel.save(err => {
       if (err) {
