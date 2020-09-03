@@ -42,4 +42,14 @@ app.use('/api/project', require('./API/Projects/getProjects'));
 //delete
 app.use('/api/project/delete', require('./API/Projects/removeProject'));
 
+//Treatment
+//add
+// require('./API/Treatment/addTreatment);
+//edit
+// require('./API/Treatment/editTreatment);
+app.use('/api/treatment/edit', require('./API/Treatment/editTreatment'));
+//read
+app.use('/api/treatment', require('./API/Treatment/getTreatment'));
+//delete
+
 app.listen(Port, () => console.log(`Server started, connected to ${Port}`));

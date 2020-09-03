@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Treatment = new.mongoose.Schema({
+const treatment = new mongoose.Schema({
   project: {
     type: mongoose.SchemaTypes.ObjectId,
     required: true
@@ -9,4 +9,6 @@ const Treatment = new.mongoose.Schema({
     type: String,
     required: true
   }
-})
+});
+
+module.exports = Project = mongoose.model('treatment', treatment);

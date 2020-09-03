@@ -35,6 +35,10 @@ module.exports = () => {
     getSession: sessionKey => {
       return storage[sessionKey];
     },
+    checkIfKeyExists: key => {
+      if(key in storage) return true
+      return false
+    },
     deleteSession: (sessionKey, callback) => {
       const user = storage[sessionKey];
       const temp = {};

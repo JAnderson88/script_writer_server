@@ -9,18 +9,17 @@ const user = new mongoose.Schema({
     index: true
   },
   password: {
-    type: String
+    type: String,
+    required: true
   },
   fileDirectory: {
-    type: String
+    type: String,
+    required: true
   },
   projects: {
     type: Array,
-    default: []
-  },
-  treatment: {
-    type: Array,
-    default: []
+    default: [],
+    required: true
   }
 })
 

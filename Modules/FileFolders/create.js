@@ -32,6 +32,9 @@ module.exports = async (path, extension, options = {}) => {
   if(!folder) await createFolder(path)
   // console.log(`${path}/${extension}`);
   if(options.type === 'folder') await createFolder(`${path}/${extension}`);
-  if(options.type === 'file') await createFile(`${path}/${extension}`, {});
+  if(options.type === 'file') {
+    const entry = (options.data) ? options.data : {}
+    await createFile(`${path}/${extension}`, JSON.stringify(entry));
+  }
   return `${path}/${extension}`;
 }

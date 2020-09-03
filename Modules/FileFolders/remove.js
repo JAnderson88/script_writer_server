@@ -34,5 +34,7 @@ module.exports = async (path, options={}) => {
   if (item){
     if(options.type === 'folder') await removeFolder(path);
     if(options.type === 'file') await removeFile(path);
+    return true;
   } 
+  return false;
 }
