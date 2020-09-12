@@ -16,7 +16,7 @@ app.use(function (req, res, next) {
 
 const Port = env.port || 3000;
 
-//Users
+////////////////////////////////////////////////////Users//////////////////////////////////////////////////////
 //add
 app.use('/api/user/add', require('./API/User/addUser'));
 //edit
@@ -26,13 +26,13 @@ app.use('/api/user', require('./API/User/getUser'));
 //delete
 app.use('/api/user/delete', require('./API/User/removeUser'));
 
-//Auth
+////////////////////////////////////////////////////Auth//////////////////////////////////////////////////////
 //login
 app.use('/api/user/login', require('./API/Auth/login'));
 //logout
 app.use('/api/user/logout', require('./API/Auth/logout'));
 
-//Projects
+////////////////////////////////////////////////////Projects//////////////////////////////////////////////////////
 //add
 app.use('/api/project/add', require('./API/Projects/addProject'));
 //edit
@@ -42,14 +42,22 @@ app.use('/api/project', require('./API/Projects/getProjects'));
 //delete
 app.use('/api/project/delete', require('./API/Projects/removeProject'));
 
-//Treatment
+////////////////////////////////////////////////////Treatment//////////////////////////////////////////////////////
 //add
 // require('./API/Treatment/addTreatment);
 //edit
-// require('./API/Treatment/editTreatment);
 app.use('/api/treatment/edit', require('./API/Treatment/editTreatment'));
 //read
 app.use('/api/treatment', require('./API/Treatment/getTreatment'));
 //delete
+// require('./API/Treatment/removeTreatment)
+
+////////////////////////////////////////////////////Suggestions//////////////////////////////////////////////////////
+//add
+app.use('/api/suggestion/add', require('./API/Suggestions/addSuggestion'));
+//get
+app.use('/api/suggestion', require('./API/Suggestions/getSuggestions'));
+//remove
+app.use('/api/suggestion/remove', require('./API/Suggestions/removeSuggestion'));
 
 app.listen(Port, () => console.log(`Server started, connected to ${Port}`));

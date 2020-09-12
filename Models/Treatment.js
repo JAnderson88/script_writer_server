@@ -11,4 +11,4 @@ const treatment = new mongoose.Schema({
   }
 });
 
-module.exports = Project = mongoose.model('treatment', treatment);
+module.exports = Treatment = mongoose.model('treatment', treatment);

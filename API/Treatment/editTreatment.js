@@ -23,12 +23,10 @@ route.put('/', async (req, res) => {
       let status;
       if (req.body.data.method === 'add') {
         newTreatment = addParagraph(treatment);
-        console.log(newTreatment);
         status = await update(`${project.fileDirectory}/treatment.json`, JSON.stringify(newTreatment, null, 2));
       }
       if (req.body.data.method === 'edit') {
         newTreatment = editParagraph(treatment, req.body.data);
-        console.log(newTreatment);
         status = await update(`${project.fileDirectory}/treatment.json`, JSON.stringify(newTreatment, null, 2));
       }
       if (req.body.data.method === 'get') {
@@ -36,7 +34,6 @@ route.put('/', async (req, res) => {
       }
       if (req.body.data.method === 'delete') {
         newTreatment = removeParagraph(treatment, req.body.data);
-        console.log(newTreatment);
         status = await update(`${project.fileDirectory}/treatment.json`, JSON.stringify(newTreatment, null, 2));
       }
       if (status) {
