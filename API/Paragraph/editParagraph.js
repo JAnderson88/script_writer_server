@@ -1,6 +1,4 @@
 module.exports = (treatment, requestBody) => {
-  // console.log(treatment);
-  // console.log(requestBody);
   const newTreatment = JSON.parse(JSON.stringify(treatment));
   const { tags, body, id } = requestBody;
   const editedTime = Date.now();

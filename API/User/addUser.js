@@ -4,6 +4,7 @@ const route = express.Router();
 const User = require('../../Models/User');
 const password = require('password-hash-and-salt');
 const create = require('../../Modules/FileFolders/create');
+const sessionStorage = require('../../Modules/SessionStorage/sessionStorage');
 
 //requirements: email, password
 route.post('/', async (req, res) => {
@@ -24,23 +25,20 @@ route.post('/', async (req, res) => {
     let userModel = new User(user);
     const firstLetter = email.substring(0, 1).toUpperCase();
     const path = `./Files/${firstLetter}`;
-    const fileDirectory = await create(path, userModel.id, {type: 'folder'});
+    const fileDirectory = await create(path, userModel.id, { type: 'folder' });
     userModel.fileDirectory = fileDirectory;
-    const userAccount = await userModel.save(err => {
+    await userModel.save(err => {
       if (err) {
         console.log(err);
-        res.status(400).json({ message: "There was an issue with creating your account" });
-        return;
+        return res.status(400).json({ message: "There was an issue with creating your account" });
       }
     });
-    if (userAccount) {
-      res.status(200).json(
-        {
-          message: "You have been authenticated",
-          sessionInfo: { email, session: sessionKey }
-        }
-      );
-    }
+    const storage = sessionStorage();
+    const sessionKey = await storage.addSession(userModel._id);
+    return res.status(200).json({
+      message: "You have been authenticated",
+      sessionInfo: { email, session: sessionKey }
+    });
   });
 });
 

@@ -22,18 +22,23 @@ route.post('/', async (req, res) => {
   const Account = await User.findOne({ "_id": storage.getSession(req.headers['authorization']) });
   //Initiate file structure setup for project
   const time = Date.now();
-  projectModel.fileDirectory = await create(Account.fileDirectory, projectModel.id, 
-    { 
-      type: 'folder', 
-      data: {
-        "createdOn": time,
-        "editedOn": time,
-        "paragraphs": []
-      } 
+  projectModel.fileDirectory = await create(Account.fileDirectory, projectModel.id,
+    {
+      type: 'folder'
     }
   );
   //--Creating Treatment
-  const treatmentPath = await create(projectModel.fileDirectory, 'treatment.json', { type: 'file' });
+  const treatmentPath = await create(projectModel.fileDirectory, 'treatment.json',
+    {
+      type: 'file',
+      data:
+        {
+          "project": projectModel._id,
+          "createdOn": time,
+          "editedOn": time,
+          "paragraphs": []
+        }
+    });
   const treatmentId = await addTreatment(projectModel.id, treatmentPath, storage.checkIfKeyExists(req.headers['authorization']));
   projectModel.treatment = treatmentId;
   //--Creating Timeling

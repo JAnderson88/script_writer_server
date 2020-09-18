@@ -12,7 +12,7 @@ route.post('/', async (req, res) => {
   const email = req.body.email;
   const unhashedPassword = req.body.password;
   const Account = await User.findOne({ email }, err => {
-    if (err) res.status(401).json({ message: "There was an error with your credentials" });
+    if (err) return res.status(401).json({ message: "There was an error with your credentials" });
   });
   password(unhashedPassword).verifyAgainst(Account.password, async (err, verified) => {
     if (err) {
@@ -20,7 +20,7 @@ route.post('/', async (req, res) => {
       throw new Error("There was an error retriving your account. It could not be deleted");
     }
     if (!verified) {
-      res.status(401).json({ message: "There was an error retriving your account." });
+      return res.status(401).json({ message: "There was an error retriving your account." });
     } else {
       const storage = sessionStorage();
       const sessionKey = await storage.addSession(Account.id);

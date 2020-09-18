@@ -13,10 +13,6 @@ const suggestion = new mongoose.Schema({
     type: Date,
     default: Date.now()
   },
-  editedOn: {
-    type: Date,
-    default: Date.now()
-  },
   classification: {
     type: String
   },
