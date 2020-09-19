@@ -32,12 +32,12 @@ route.post('/', async (req, res) => {
     {
       type: 'file',
       data:
-        {
-          "project": projectModel._id,
-          "createdOn": time,
-          "editedOn": time,
-          "paragraphs": []
-        }
+      {
+        "project": projectModel._id,
+        "createdOn": time,
+        "editedOn": time,
+        "paragraphs": []
+      }
     });
   const treatmentId = await addTreatment(projectModel.id, treatmentPath, storage.checkIfKeyExists(req.headers['authorization']));
   projectModel.treatment = treatmentId;
@@ -58,10 +58,11 @@ route.post('/', async (req, res) => {
           res.status(400).json({ message: 'There was an error adding your project' });
           savedProjectObject.deleteOne({ "_id": projectModel.id }, err => {
             console.log(err);
-          })
+          });
+          return;
         }
       });
-      res.json({
+      return res.json({
         message: `Project ${project.name} has been added`,
         activeProject: savedProjectObject.id,
         project: {

@@ -22,7 +22,8 @@ const project = new mongoose.Schema({
     required: true
   },
   createdBy: {
-    type: String
+    type: String,
+    default: ""
   },
   scriptType: {
     type: String,

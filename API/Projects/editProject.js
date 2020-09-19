@@ -20,13 +20,13 @@ route.post('/', async (req, res) => {
     await project.save(err => {
       if (err) {
         console.log(err);
-        res.status(400).json({ message: 'There was a problem updated the project' });
+        return res.status(400).json({ message: 'There was a problem updated the project' });
       } else {
-        res.status(200).json({ message: 'Updated project succesfully' });
+        return res.status(200).json({ message: 'Updated project succesfully' });
       }
     })
   } else {
-    res.status(400).json({ message: 'There was a problem updated the project' });
+    return res.status(400).json({ message: 'There was a problem updated the project' });
   }
 })
 
