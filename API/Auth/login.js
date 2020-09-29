@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const route = express.Router();
 const User = require('../../Models/User');
@@ -11,9 +10,8 @@ route.post('/', async (req, res) => {
   console.log("Running Login")
   const email = req.body.email;
   const unhashedPassword = req.body.password;
-  const Account = await User.findOne({ email }, err => {
-    if (err) return res.status(401).json({ message: "There was an error with your credentials" });
-  });
+  const Account = await User.findOne({ email });
+  if (!Account) return res.status(401).json({ message: "There was an error with your credentials" });
   password(unhashedPassword).verifyAgainst(Account.password, async (err, verified) => {
     if (err) {
       res.status(401).json({ message: "There was an error retriving your accout." });

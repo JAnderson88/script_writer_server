@@ -17,7 +17,7 @@ route.get('/', async (req, res) => {
     if (!project) return res.status(204).json({ message: "There was something wrong with returning the result" });
     return res.status(200).json(
       {
-        message: "Retrived project succesfully",
+        message: "Retrieved project succesfully",
         project: {
           name: project.name,
           createdOn: project.createdOn,

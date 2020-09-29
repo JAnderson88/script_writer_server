@@ -3,7 +3,6 @@ const route = express.Router();
 const Project = require('../../Models/Project');
 const addParagraph = require('../Paragraph/addParagraph');
 const editParagraph = require('../Paragraph/editParagraph');
-const getParagraph = require('../Paragraph/getParagraph');
 const removeParagraph = require('../Paragraph/removeParagraph');
 const sessionStorage = require('../../Modules/SessionStorage/sessionStorage');
 const update = require('../../Modules/FileFolders/update');
@@ -29,8 +28,12 @@ route.put('/', async (req, res) => {
         newTreatment = editParagraph(treatment, req.body.data);
         status = await update(`${project.fileDirectory}/treatment.json`, JSON.stringify(newTreatment, null, 2));
       }
-      if (req.body.data.method === 'get') {
-        getParagraph(treatment);
+      // if (req.body.data.method === 'get') {
+      // }
+      if (req.body.data.method === 'reconfigure') {
+        newTreatment = JSON.parse(JSON.stringify(treatment));
+        newTreatment.paragraphs = req.body.data.newParagraphs;
+        status = await update(`${project.fileDirectory}/treatment.json`, JSON.stringify(newTreatment, null, 2));
       }
       if (req.body.data.method === 'delete') {
         newTreatment = removeParagraph(treatment, req.body.data);
