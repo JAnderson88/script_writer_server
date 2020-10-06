@@ -32,7 +32,7 @@ const project = new mongoose.Schema({
   },
   scriptOptions: {
     type: String,
-    default: "1"
+    default: "3"
   },
   treatment: {
     type: mongoose.SchemaTypes.ObjectId
