@@ -11,8 +11,8 @@ route.delete('/', async (req, res) => {
   const storage = sessionStorage();
   const userid = storage.getSession(req.headers['authorization']);
   const Account = await User.findOne({ "_id": userid });
-  await remove(`${Account.fileDirectory}/${req.body.project}`, { type: 'folder' });
   if (req.body.project) {
+    await remove(`${Account.fileDirectory}/${req.body.project}`, { type: 'folder' });
     await Project.deleteOne({ "_id": req.body.project }, (err, obj) => {
       if (err) return res.status(400).json({ message: `There was a problem deleting the project` });
     });
