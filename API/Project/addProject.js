@@ -3,6 +3,7 @@ const route = express.Router();
 const User = require('../../Models/User');
 const Project = require('../../Models/Project');
 const addTreatment = require('../../API/Treatment/addTreatment');
+const addTimeline = require('../Timeline/addTimeline');
 const sessionStorage = require('../../Modules/SessionStorage/sessionStorage');
 const create = require('../../Modules/FileFolders/create');
 
@@ -20,14 +21,18 @@ route.post('/', async (req, res) => {
   const projectModel = new Project(project);
   //Find account that the project it will be attached to
   const Account = await User.findOne({ "_id": storage.getSession(req.headers['authorization']) });
+  if (!Account) return res.status(400).json({ message: 'There was an error adding your project' });
   //Initiate file structure setup for project
   const time = Date.now();
-  projectModel.fileDirectory = await create(Account.fileDirectory, projectModel.id,
+  const fileDirectory = await create(Account.fileDirectory, projectModel.id,
     {
       type: 'folder'
     }
   );
+  if (!fileDirectory) return res.status(400).json({ message: 'There was an error adding your project' });
   //--Creating Treatment
+  // console.log(fileDirectory);
+  projectModel.fileDirectory = fileDirectory;
   const treatmentPath = await create(projectModel.fileDirectory, 'treatment.json',
     {
       type: 'file',
@@ -39,20 +44,25 @@ route.post('/', async (req, res) => {
         "paragraphs": []
       }
     });
+
   const treatmentId = await addTreatment(projectModel.id, treatmentPath, storage.checkIfKeyExists(req.headers['authorization']));
+  if (!treatmentId) return res.status(400).json({ message: 'There was an error adding your project' });
   projectModel.treatment = treatmentId;
-  //--Creating Timeling
+  //--Creating Timeline
+  const timelineId = await addTimeline(projectModel, storage.checkIfKeyExists(req.headers['authorization']));
+  if (!timelineId) return res.status(400).json({ message: 'There was an error adding your project' });
+  projectModel.timeline = timelineId;
   //--Creating Characters
   await create(projectModel.fileDirectory, 'charachters.json', { type: 'file' });
   //--Creating Script
   await create(projectModel.fileDirectory, 'Script', { type: 'folder' });
-  projectModel.save(async (err, savedProjectObject) => {
+  await projectModel.save(async (err, savedProjectObject) => {
     if (err) {
       console.log(err);
       res.json({ message: "There was an error adding your project" });
     } else {
       Account.projects.push(projectModel.id);
-      await Account.save((err, savedAccountObject) => {
+      await Account.save(err => {
         if (err) {
           console.log(err);
           res.status(400).json({ message: 'There was an error adding your project' });

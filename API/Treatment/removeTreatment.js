@@ -1,23 +1,26 @@
-const express = require('express');
-const route = express.Router();
 const Treatment = require('../../Models/Treatment');
 const remove = require('../../Modules/FileFolders/remove');
 
-const removeTreatment = (treatmentId, jsonPath, authorization) => {
+const removeTreatment = async (treatmentId, authorization) => {
   if (!authorization) return;
-  await remove(jsonPath, { type: "file" });
-  const removedTreatment = await Treatment.removeOne({ "_id": treatmentId }, err => {
+  console.log("Passed authorization");
+  // await remove(jsonPath, { type: "file" });
+  const removedTreatment = await Treatment.remove({ "_id": treatmentId }, err => {
     if (err) {
       console.log(err);
+      console.log("Error removing treatment");
       return {
         status: 400,
-        message: `There was a problem deleting the project`
+        message: `There was a problem deleting the treatment`
       }
     }
   });
-  if(removedTreatment) return {
-    status: 200,
-    message: `Treatment has been succesfully removed`
+  if(removedTreatment) {
+    console.log("Treatment is succesfully removed");
+    return {
+      status: 200,
+      message: `Treatment has been succesfully removed`
+    }
   }
 }
 

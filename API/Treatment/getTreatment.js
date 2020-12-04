@@ -7,7 +7,6 @@ const sessionStorage = require('../../Modules/SessionStorage/sessionStorage');
 //needed: session, project id 
 route.get('/', async (req, res) => {
   if (!req.headers['authorization']) return res.status(401).json({ message: "You are not authorized" });
-  console.log(req.query);
   console.log("Running getTreatment")
   const storage = sessionStorage();
   const userid = storage.getSession(req.headers['authorization']);
@@ -20,7 +19,7 @@ route.get('/', async (req, res) => {
     if (!treatment) return res.status(204).json({ message: "There was something wrong with returning the result" });
     res.status(200).json({
       message: "Treatment returned succesfully",
-      treatment: JSON.stringify(treatment)
+      treatment: JSON.stringify(treatment),
     });
   }
 });

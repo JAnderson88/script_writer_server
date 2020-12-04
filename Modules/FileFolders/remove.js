@@ -31,10 +31,10 @@ async function removeFile(path) {
 module.exports = async (path, options={}) => {
   console.log(path);
   const item = await exists(path);
+  let confirmation = false;
   if (item){
-    if(options.type === 'folder') await removeFolder(path);
-    if(options.type === 'file') await removeFile(path);
-    return true;
+    confirmation = (options.type === 'folder') ? await removeFolder(path) :
+    (options.type === 'file') ? await removeFile(path) : false;
   } 
-  return false;
+  return confirmation;
 }

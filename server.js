@@ -34,13 +34,13 @@ app.use('/api/user/logout', require('./API/Auth/logout'));
 
 ////////////////////////////////////////////////////Projects//////////////////////////////////////////////////////
 //add
-app.use('/api/project/add', require('./API/Projects/addProject'));
+app.use('/api/project/add', require('./API/Project/addProject'));
 //edit
-app.use('/api/project/edit', require('./API/Projects/editProject'));
+app.use('/api/project/edit', require('./API/Project/editProject'));
 //read
-app.use('/api/project', require('./API/Projects/getProjects'));
+app.use('/api/project', require('./API/Project/getProjects'));
 //delete
-app.use('/api/project/delete', require('./API/Projects/removeProject'));
+app.use('/api/project/delete', require('./API/Project/removeProject'));
 
 ////////////////////////////////////////////////////Treatment//////////////////////////////////////////////////////
 //add
@@ -59,5 +59,14 @@ app.use('/api/suggestion/add', require('./API/Suggestions/addSuggestion'));
 app.use('/api/suggestion', require('./API/Suggestions/getSuggestions'));
 //remove
 app.use('/api/suggestion/remove', require('./API/Suggestions/removeSuggestion'));
+////////////////////////////////////////////////////TImeline//////////////////////////////////////////////////////
+//add
+// require('./API/Timeline/addTimeline');
+//edit
+app.use('/api/timeline/edit', require('./API/Timeline/editTimeline'));
+//get
+app.use('/api/timeline', require('./API/Timeline/getTimeline'));
+//remove
+// require('./API/Timeline/removeTimeline');
 
 app.listen(Port, () => console.log(`Server started, connected to ${Port}`));

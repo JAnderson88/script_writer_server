@@ -7,17 +7,18 @@ const removeParagraph = require('../Paragraph/removeParagraph');
 const sessionStorage = require('../../Modules/SessionStorage/sessionStorage');
 const update = require('../../Modules/FileFolders/update');
 
+//requires: sessionId, projectId, data
 route.put('/', async (req, res) => {
   if (!req.headers['authorization']) return res.status(401).json({ message: "You are not authorized" });
   console.log("Running editTreatment");
   const storage = sessionStorage();
   const userid = storage.getSession(req.headers['authorization']);
-  if (req.body.project) {
+  if (req.body.project && userid) {
     const project = await Project.findOne({ "_id": req.body.project });
     if (project === null) return res.status(204).json({ message: "There was something wrong with returning the result" });
     const treatmentPath = `../../${project.fileDirectory}/treatment.json`;
     const treatment = require(treatmentPath);
-    if (req.body.data) {
+    if (req.body.data && project) {
       let newTreatment;
       let status;
       if (req.body.data.method === 'add') {

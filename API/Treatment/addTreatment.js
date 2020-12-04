@@ -6,9 +6,8 @@ const addTreatment = async (projectId, jsonPath, authorization) => {
   treatment.project = projectId;
   treatment.location = jsonPath;
   const treatmentModel = new Treatment(treatment);
-  await treatmentModel.save(err => {
-    if(err) console.log(err);
-  });
+  const treatmentConfirmation = await treatmentModel.save();
+  if (!treatmentConfirmation) return false;
   return treatmentModel.id;
 }
 
