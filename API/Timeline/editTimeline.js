@@ -105,14 +105,9 @@ route.put('/', async (req, res) => {
           status = true;
         }
         if (req.body.data.options.type === "scene") {
-          // console.log(req.body.data);
-          console.log(timeline.scenes);
           const act = parseInt(req.body.data.plot.act) - 1;
-          // console.log(act);
           const sceneId = req.body.data.plot.sceneId;
-          // console.log(sceneId);
           //Delete Scene
-          // console.log(timeline.scenes[act][sceneId]);
           const deleteQuery = { _id: timeline.scenes[act][sceneId] };
           const sceneDeletionconfirmation = await Scene.deleteOne(deleteQuery);
           if (!sceneDeletionconfirmation) {
@@ -121,19 +116,14 @@ route.put('/', async (req, res) => {
           //Decrement of each Scene that proceded it because they have a new spot
           const frontHalf = [...timeline.scenes[act].slice(0, sceneId)];
           const backHalf = [...timeline.scenes[act].slice(sceneId + 1)];
-          // console.log(frontHalf);
-          // console.log(backHalf);
           const updateQuery = { _id: { $in: backHalf } }
           const incrementor = { $inc: { sceneId: -1 } }
           const updateSceneIdConfrimation = await Scene.updateMany(updateQuery, incrementor);
-          // console.log(updateSceneIdConfrimation);
           if (!updateSceneIdConfrimation) {
             console.log(updateSceneIdConfrimation)
           }
           const tempArray = [...frontHalf, ...backHalf];
-          // console.log(tempArray);
           timeline.scenes[parseInt(req.body.data.plot.act) - 1] = [...tempArray];
-          console.log(timeline.scenes);
           const savedTimeline = await Timeline.updateOne({ _id: timeline.id }, { $set: { scenes: timeline.scenes } });
           if (!savedTimeline) return res.status(500).json({ message: "There was something wrong with returning the result" });
           status = true;

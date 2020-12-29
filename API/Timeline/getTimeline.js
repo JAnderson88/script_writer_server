@@ -22,11 +22,11 @@ route.get('/', async (req, res) => {
         scenes.push(await Scene.findOne({ "_id": timeline.scenes[i][j] }));
       }
     }
-    res.status(200).json({
+    return res.status(200).json({
       message: "Timeline returned succesfully",
       timeline: scenes,
       acts: timeline.scenes.length - 1,
-      colorArray: timeline.colorArray
+      colorArray: timeline.colorArray,
     });
   }
 });

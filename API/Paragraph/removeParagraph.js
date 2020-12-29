@@ -1,5 +1,4 @@
 module.exports = (treatment, requestBody) => {
-  console.log(treatment);
   console.log("Running addParagraph");
   const newTreatment = JSON.parse(JSON.stringify(treatment));
   newTreatment.paragraphs = [];

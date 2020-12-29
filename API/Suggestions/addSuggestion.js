@@ -8,7 +8,6 @@ const sessionStorage = require('../../Modules/SessionStorage/sessionStorage');
 route.post('/', async (req, res) => {
   if (!req.headers['authorization']) return res.status(401).json({ message: "You are not authorized" });
   console.log("Running addSuggestion");
-  console.log(req.body);
   const storage = sessionStorage();
   const Account = User.findOne({ "_id": storage.getSession(req.headers['authorization']) });
   if (!Account) return res.status(401).json({ message: "You are not authorized" });

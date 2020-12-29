@@ -17,9 +17,10 @@ route.get('/', async (req, res) => {
     if (!project) return res.status(204).json({ message: "There was something wrong with returning the result" });
     const treatment = require(`../../${project.fileDirectory}/treatment.json`);
     if (!treatment) return res.status(204).json({ message: "There was something wrong with returning the result" });
-    res.status(200).json({
+    return res.status(200).json({
       message: "Treatment returned succesfully",
       treatment: JSON.stringify(treatment),
+      createdBy: project.createdBy,
     });
   }
 });

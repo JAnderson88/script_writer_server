@@ -1,3 +1,5 @@
 /node_modules
 /Modules/SessionStorage/sessionStorage.json
 /Files
+/package.json
+/package-lock.json

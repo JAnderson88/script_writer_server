@@ -22,15 +22,13 @@ route.put('/', async (req, res) => {
       let newTreatment;
       let status;
       if (req.body.data.method === 'add') {
-        newTreatment = addParagraph(treatment);
+        newTreatment = addParagraph(treatment, req.body.data.page);
         status = await update(`${project.fileDirectory}/treatment.json`, JSON.stringify(newTreatment, null, 2));
       }
       if (req.body.data.method === 'edit') {
         newTreatment = editParagraph(treatment, req.body.data);
         status = await update(`${project.fileDirectory}/treatment.json`, JSON.stringify(newTreatment, null, 2));
       }
-      // if (req.body.data.method === 'get') {
-      // }
       if (req.body.data.method === 'reconfigure') {
         newTreatment = JSON.parse(JSON.stringify(treatment));
         newTreatment.paragraphs = req.body.data.newParagraphs;

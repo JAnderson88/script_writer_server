@@ -1,6 +1,6 @@
 const IDGenerator = require('../../Modules/idGenerator/idgenerator');
 
-module.exports = (treatment) => {
+module.exports = (treatment, page) => {
   console.log("Running addParagraph");
   const newTreatment = JSON.parse(JSON.stringify(treatment));
   const newEntry = {};
@@ -10,6 +10,7 @@ module.exports = (treatment) => {
   newEntry.editedOn = updateTime;
   newEntry.tags = "";
   newEntry.body = "";
+  newEntry.page = page.toString();
   newEntry.suggestions = [];
   newTreatment.paragraphs.push(newEntry);
   return newTreatment;
